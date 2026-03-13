@@ -1,0 +1,197 @@
+  <!DOCTYPE html>
+<html>
+<head>
+<title>Event Manager</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f4f4f4;
+    padding:40px;
+}
+
+.container{
+    width:500px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:8px;
+}
+
+h2{
+    text-align:center;
+}
+
+input{
+    width:100%;
+    padding:8px;
+    margin:6px 0;
+}
+
+button{
+    padding:8px 12px;
+    margin-top:5px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    margin-top:20px;
+    border-collapse:collapse;
+}
+
+th, td{
+    border:1px solid #ccc;
+    padding:8px;
+    text-align:center;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+<h2>Event Management System</h2>
+
+<!-- Event Form -->
+
+<input type="text" id="name" placeholder="Event Name">
+
+<input type="date" id="date">
+
+<input type="text" id="location" placeholder="Location">
+
+<button onclick="addEvent()">Add Event</button>
+
+<!-- Event Table -->
+
+<table>
+
+<thead>
+<tr>
+<th>Name</th>
+<th>Date</th>
+<th>Location</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody id="eventList"></tbody>
+
+</table>
+
+</div>
+
+
+
+<script>
+
+let EVENTS = []
+let editIndex = -1
+
+
+function addEvent(){
+
+let name = document.getElementById("name").value
+let date = document.getElementById("date").value
+let location = document.getElementById("location").value
+
+if(name=="" || date=="" || location==""){
+alert("Please fill all fields")
+return
+}
+
+let event = {
+name:name,
+date:date,
+location:location
+}
+
+if(editIndex === -1){
+EVENTS.push(event)
+}
+else{
+EVENTS[editIndex] = event
+editIndex = -1
+}
+
+clearForm()
+displayEvents()
+
+}
+
+
+
+function displayEvents(){
+
+let list = document.getElementById("eventList")
+
+list.innerHTML = ""
+
+for(let i=0;i<EVENTS.length;i++){
+
+let row = `<tr>
+
+<td>${EVENTS[i].name}</td>
+<td>${EVENTS[i].date}</td>
+<td>${EVENTS[i].location}</td>
+
+<td>
+
+<button onclick="editEvent(${i})">Edit</button>
+
+<button onclick="deleteEvent(${i})">Delete</button>
+
+</td>
+
+</tr>`
+
+list.innerHTML += row
+
+}
+
+}
+
+
+
+function deleteEvent(index){
+
+EVENTS.splice(index,1)
+
+displayEvents()
+
+}
+
+
+
+function editEvent(index){
+
+let event = EVENTS[index]
+
+document.getElementById("name").value = event.name
+document.getElementById("date").value = event.date
+document.getElementById("location").value = event.location
+
+editIndex = index
+
+}
+
+
+
+function clearForm(){
+
+document.getElementById("name").value = ""
+document.getElementById("date").value = ""
+document.getElementById("location").value = ""
+
+}
+
+</script>
+
+</body>
+</html>
